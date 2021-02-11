@@ -1,10 +1,10 @@
-FROM node:12.14.1 As development
+FROM node:12.13-alpine As development
 
 #Set Working Directory
 WORKDIR /usr/src/app
 
 #Copy package.json file
-COPY package.json package.json
+COPY package*.json ./
 
 #Install dev dependencies
 RUN npm install --only=development
@@ -13,11 +13,9 @@ RUN npm install --only=development
 COPY . .
 
 #Build
-RUN npm run prebuild
-
 RUN npm run build
 
-FROM node:12.14.1 As production
+FROM node:12.13-alpine As production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
